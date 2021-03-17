@@ -2,6 +2,7 @@
 import datetime
 import json
 from typing import List
+import requests
 
 
 def grab_data_from_api(start_time, end_time):
@@ -17,12 +18,10 @@ def grab_data_from_api(start_time, end_time):
         "end_time": end_time,
     }
     headers = {
-        # 'Authorization': 'Bearer SECRET_KEY',
         'Content-Type': 'application/json'
     }
 
-    response = requests.request("GET", url, headers=headers, data=payload)
-    print(response)
+    response = requests.get(url, headers=headers, params=payload)
     json_data = response.json()
     # Pour chaque valeur json dans le tableau renvoyé
     # Créer une entrée dans la BDD
@@ -33,39 +32,6 @@ def grab_data_from_api(start_time, end_time):
 # def fetch_all_data_from_db():
 #     all_co2_data = C02.objects.all()
 #     return all_co2_data
-
-
-# Format des données
-co2_data = [
-    {
-        "datetime": "2016-01-01T00:00:00",
-        "co2_rate": 36
-    },
-    {
-        "datetime": "2016-01-01T00:30:00",
-        "co2_rate": 49
-    },
-    {
-        "datetime": "2016-01-01T01:00:00",
-        "co2_rate": 44
-    },
-    {
-        "datetime": "2016-01-01T01:30:00",
-        "co2_rate": 40
-    },
-    {
-        "datetime": "2016-01-01T02:00:00",
-        "co2_rate": 37
-    },
-    {
-        "datetime": "2016-01-01T02:30:00",
-        "co2_rate": 36
-    },
-    {
-        "datetime": "2016-01-01T03:00:00",
-        "co2_rate": 48
-    },
-]
 
 
 def filter_by_hour(value: json):
@@ -80,7 +46,9 @@ def filter_co2_data_to_one_hour_frequence(all_co2_data: List):
 
 
 def convert_date_time_to_time_stamp(date_time: str):
-    return datetime.datetime.strptime(date_time, '%Y-%m-%dT%H:%M:%S').timestamp()
+    date_time_obj = datetime.datetime.strptime(date_time, '%Y-%m-%dT%H:%M:%S')
+    # On doit rester en UTC pour éviter le bug avec le DST par rapport à la timezone
+    return date_time_obj.replace(tzinfo=datetime.timezone.utc).timestamp()
 
 
 def interpolate_data(current_data, previous_data, next_data):
@@ -145,14 +113,12 @@ def generate_tmp_interpolated_data(filtered_data):
     return interpolated_data_tmp
 
 
-filtered_data = filter_co2_data_to_one_hour_frequence(co2_data)
-interpolated_data = interpolate_data_aux(filtered_data)
+# Todo -> Tout ce code sera dans une api à terme
 
-print(co2_data)
-print(interpolated_data)
+co2_data_fetched = grab_data_from_api("2017-01-01T00:00:00", "2019-01-01T00:00:00")
+filtered_data = filter_co2_data_to_one_hour_frequence(co2_data_fetched)
+interpolated_data = interpolate_data_aux(filtered_data)
 data_difference = [{
     'datetime': x["datetime"],
     'difference_abs': abs(x["co2_rate"] - y["co2_rate"])
-} for x, y in zip(co2_data, interpolated_data)]
-
-print(data_difference)
+} for x, y in zip(co2_data_fetched, interpolated_data)]
