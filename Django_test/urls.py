@@ -20,5 +20,6 @@ from Django_test.views.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name="index")
+    path('', index, name="index"),
+    # path('Co2_data/', get_co2_data_from_start_to_end, name="Co2_data")
 ]
