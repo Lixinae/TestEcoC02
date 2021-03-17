@@ -1,11 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Coucou</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
 
-    <p> Hello world </p>
-</body>
-</html>
+{% block app_content %}
+
+    <div class="container">
+        <div id="app">
+            <div id="app_title"> EcoC02 Test Technique </div>
+            <div class="app_data">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="{% static 'scripts/app.js' %}"></script>
+{% endblock %}

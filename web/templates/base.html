@@ -1,0 +1,24 @@
+{% load static %}
+{% block head %}
+    {% block scripts %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/vuex"></script>
+    {% endblock %}
+
+    {% block styles %}
+        <!-- CSS CUSTOM -->
+        <link rel=”stylesheet” href=”{% static 'css/styles.css' %}”>
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+
+    {% block content %}
+        <div class="body-content">
+            {% block app_content %}{% endblock %}
+        </div>
+
+    {% endblock %}
+{% endblock %}
