@@ -3,5 +3,5 @@ from . import api_views
 
 # Wire up our API using automatic URL routing.
 urlpatterns = [
-    path('', api_views.LastElementsData.as_view()),
+    path('LastElementsData/', api_views.LastElementsData.as_view()),
 ]
