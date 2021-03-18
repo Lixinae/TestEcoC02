@@ -6,49 +6,36 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from app.data.data_fetcher import grab_data_from_api, filter_co2_data_to_one_hour_frequence, \
-    interpolate_data_aux
+from app.data.data_fetcher import interpolate_data_aux
+from app.models import RealDataC02, FilteredDataC02
 
 
 class LastElementsData(APIView):
 
     def get(self, request):
         try:
-            size = 1
-            if "size" in request.GET:
-                size = int(request.GET["size"])
-            # Todo -> Ici récuperer les informations via la BDD et pas via les fonctions
-            #   Ici les fonctions ne sont la qu'a titre de test
-            # Faire des appels à la BDD
-            # Pour avoir les n derniers, faire -> malist[-n:]
-            # request.
-            real_data_json_tmp = grab_data_from_api("2017-01-01T00:00:00", "2018-12-31T00:00:00")
-            real_data_json = [{
-                'datetime': x['datetime'],
-                'co2_rate': x['co2_rate'],
-                'is_week_day': datetime.datetime.strptime(x['datetime'], '%Y-%m-%dT%H:%M:%S').weekday() < 5
-            } for x in real_data_json_tmp]
-            print(real_data_json[-size:])
-            filtered_data = filter_co2_data_to_one_hour_frequence(real_data_json)
+            real_data_tmp = RealDataC02.objects.all()
+            filtered_data = FilteredDataC02.objects.all()
 
             interpolated_data_json_tmp = interpolate_data_aux(filtered_data)
-            interpolated_data_json = [{
-                'datetime': x['datetime'],
-                'co2_rate': x['co2_rate'],
-                'is_week_day': datetime.datetime.strptime(x['datetime'], '%Y-%m-%dT%H:%M:%S').weekday() < 5
-            } for x in interpolated_data_json_tmp]
-
+            real_data_json_tmp = [x.to_json() for x in real_data_tmp]
             difference_data_json = [{
                 'datetime': x["datetime"],
-                'is_week_day': x["is_week_day"],
-                'difference_abs': abs(x["co2_rate"] - y["co2_rate"])
-            } for x, y in zip(real_data_json, interpolated_data_json)]
+                'difference': x["co2_rate"] - y["co2_rate"]
+            } for x, y in zip(real_data_json_tmp, interpolated_data_json_tmp)]
 
-            json_data = {
-                'real_data': real_data_json[-size:],
-                'interpolated_data': interpolated_data_json[-size:],
-                'difference_data': difference_data_json[-size:],
-            }
-            return JsonResponse(json_data, safe=False)
+            json_data_to_send = []
+            # Les 3 list json doivent être de la même taille ici
+            for i in range(len(real_data_json_tmp)):
+                data = {
+                    'datetime': real_data_json_tmp[i]["datetime"],
+                    'real_co2_rate': real_data_json_tmp[i]["co2_rate"],
+                    'interpolated_co2_rate': interpolated_data_json_tmp[i]["co2_rate"],
+                    'difference': difference_data_json[i]["difference"],
+                }
+                json_data_to_send.append(data)
+            # Todo -> surement devoir faire un parcours pour établir la moyenne à l'instant T
+            #   sur les jours ouvrés et week-end
+            return JsonResponse(json_data_to_send, safe=False)
         except ValueError as e:
             return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
