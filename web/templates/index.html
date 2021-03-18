@@ -6,26 +6,20 @@
     <div class="container">
         <div id="app">
             <div class="app_title"> EcoC02 Test Technique</div>
-            <p><% data_size %></p>
+            <button v-on:click="fetch_last_n_elements_to_display"> Query data from server </button>
             <ul>
-                <li v-for="data in real_data">
-                    {#                        index = <% index %> /#}
-                    {#                        index.co2_rate = <% index.co2_rate %> /#}
-                    {#                        index.datetime = <% index.datetime %> /#}
-                    co2_rate = <% data.co2_rate %> /
-                    datetime = <% data.datetime %>
-                    is_week_day = <% data.is_week_day %>
-                </li>
+{#                <li v-for="data in real_data">#}
+{#                    co2_rate = <% data.co2_rate %> /#}
+{#                    datetime = <% data.datetime %>#}
+{#                    is_week_day = <% data.is_week_day %>#}
+{#                </li>#}
             </ul>
             <ul>
-                <li v-for="data in difference_data">
-                    {#                        index = <% index %> /#}
-                    {#                        index.co2_rate = <% index.co2_rate %> /#}
-                    {#                        index.datetime = <% index.datetime %> /#}
-                    difference = <% data.difference_abs %> /
-                    datetime = <% data.datetime %>
-                    is_week_day = <% data.is_week_day %>
-                </li>
+{#                <li v-for="data in difference_data">#}
+{#                    difference = <% data.difference_abs %> /#}
+{#                    datetime = <% data.datetime %>#}
+{#                    is_week_day = <% data.is_week_day %>#}
+{#                </li>#}
             </ul>
 
         </div>
