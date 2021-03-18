@@ -6,20 +6,21 @@
     <div class="container">
         <div id="app">
             <div class="app_title"> EcoC02 Test Technique</div>
-            <button v-on:click="fetch_last_n_elements_to_display"> Query data from server </button>
+            <button v-on:click="fetch_elements"> Query data from server </button>
+
+            <input id="input_nb_values_display" v-model.number="numb_values_to_display" type="number" placeholder="1" min="1">
+            <label for="input_nb_values_display">Nb values to display</label>
             <ul>
-{#                <li v-for="data in real_data">#}
-{#                    co2_rate = <% data.co2_rate %> /#}
-{#                    datetime = <% data.datetime %>#}
-{#                    is_week_day = <% data.is_week_day %>#}
-{#                </li>#}
-            </ul>
-            <ul>
-{#                <li v-for="data in difference_data">#}
-{#                    difference = <% data.difference_abs %> /#}
-{#                    datetime = <% data.datetime %>#}
-{#                    is_week_day = <% data.is_week_day %>#}
-{#                </li>#}
+                <li v-for="data in co2_rate_all_data_last_n">
+                    datetime = <% data.dt %> |
+                    real_co2 = <% data.rco2 %> |
+                    interpolated_co2 = <% data.ico2 %> |
+                    difference = <% data.diff %> |
+                    moyenne_jours_ouvre_real_co2 = <% data.m_jo_rco2 %> |
+                    moyenne_weekend_real_co2 = <% data.m_we_rco2 %> |
+                    moyenne_jours_ouvre_interpolated_co2 = <% data.m_jo_ico2 %> |
+                    moyenne_weekend_interpolated_co2 = <% data.m_we_ico2 %>
+                </li>
             </ul>
 
         </div>
