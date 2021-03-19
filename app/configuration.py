@@ -14,7 +14,8 @@ class AppDjangoConfig(AppConfig):
         from app.data.data_fetcher import grab_data_from_api, filter_co2_data_to_one_hour_frequence, \
             convert_date_time_to_timestamp
 
-        co2_data_fetched = grab_data_from_api("2017-01-01T00:00:00", "2018-12-31T23:00:00")
+        output_data = grab_data_from_api("2017-01-01T00:00:00", "2018-12-31T23:00:00")
+        co2_data_fetched = output_data[1]
         filtered_data = filter_co2_data_to_one_hour_frequence(co2_data_fetched)
 
         co2_data_fetched = [{

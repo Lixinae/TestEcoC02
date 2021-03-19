@@ -1,10 +1,10 @@
 import datetime
 import json
 import requests
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 
-def grab_data_from_api(start_time: str, end_time: str) -> List[Dict]:
+def grab_data_from_api(start_time: str, end_time: str) -> Tuple:
     """
     Récupère la data à partir de l'api d'ecoco2
     "http://api-recrutement.ecoco2.com/v1/data/"
@@ -23,7 +23,7 @@ def grab_data_from_api(start_time: str, end_time: str) -> List[Dict]:
     json_data = []
     if response.status_code == 200:
         json_data = response.json()
-    return json_data
+    return response.status_code, json_data
 
 
 def filter_by_hour(value: json) -> bool:
