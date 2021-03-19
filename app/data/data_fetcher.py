@@ -2,7 +2,6 @@ import datetime
 import json
 import requests
 from typing import List, Dict
-from app.models import FilteredDataC02
 
 
 def grab_data_from_api(start_time: str, end_time: str) -> List[Dict]:
@@ -21,7 +20,9 @@ def grab_data_from_api(start_time: str, end_time: str) -> List[Dict]:
         'Content-Type': 'application/json'
     }
     response = requests.get(url, headers=headers, params=payload)
-    json_data = response.json()
+    json_data = []
+    if response.status_code == 200:
+        json_data = response.json()
     return json_data
 
 
@@ -32,6 +33,8 @@ def filter_by_hour(value: json) -> bool:
     :param value: Le json sur lequel on veut tester la valeur
     :return: True si c'est l'on a une heure pleine
     """
+    if "datetime" not in value:
+        return False
     date_splits = value["datetime"].split(":")
     # On sais que le 2e argument sera les minutes, 0 min -> heure pleine
     return date_splits[1] == "00"
@@ -105,7 +108,7 @@ def interpolate_all_data_from_tmp(interpolated_data_tmp: List[Dict]) -> List[Dic
     return interpolated_data
 
 
-def generate_tmp_interpolated_data(filtered_data: List[FilteredDataC02]) -> List[Dict]:
+def generate_tmp_interpolated_data(filtered_data: List) -> List[Dict]:
     """
     Génère une liste de données à partir des données filtré
     Indique -1 si la donnée doit être interpolé par la suite
@@ -131,7 +134,7 @@ def generate_tmp_interpolated_data(filtered_data: List[FilteredDataC02]) -> List
 
 
 # Données en entré filtré par heure
-def interpolate_data_aux(filtered_data: List[FilteredDataC02]) -> List[Dict]:
+def interpolate_data_aux(filtered_data: List) -> List[Dict]:
     """
     Génère la liste de données à interpolé
     Réalise l'interpolation sur les éléments nécessaire et renvoie la liste des données interpolé
