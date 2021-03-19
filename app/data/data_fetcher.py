@@ -36,6 +36,8 @@ def filter_by_hour(value: json) -> bool:
     if "datetime" not in value:
         return False
     date_splits = value["datetime"].split(":")
+    if len(date_splits) < 2:
+        return False
     # On sais que le 2e argument sera les minutes, 0 min -> heure pleine
     return date_splits[1] == "00"
 
@@ -69,6 +71,12 @@ def interpolate_data(current_data: Dict, previous_data: Dict, next_data: Dict) -
     :param next_data: La donnée suivante
     :return: Le co2_rate interpolé à partir des données en entrée
     """
+    if ("datetime" not in current_data) or \
+            ("datetime" not in previous_data) or \
+            ("datetime" not in next_data) or \
+            ("co2_rate" not in previous_data) or \
+            ("co2_rate" not in next_data):
+        return -1
     current_data_time = current_data["datetime"]  # X
     # current_data_co2_rate = current_data["co2_rate"]  # On cherche à calculer cette valeur, Y
 
@@ -118,14 +126,14 @@ def generate_tmp_interpolated_data(filtered_data: List) -> List[Dict]:
     interpolated_data_tmp = []
     i = 0
     for data in filtered_data:
-        data_json = data.to_json()
-        interpolated_data_tmp.append(data_json)
+        # data_json = data.to_json()
+        interpolated_data_tmp.append(data)
         # On ne peut interpoler que si l'on a la donnée précédente et suivante
         # Donc le dernier élément ne doit pas être ajouté
-        if i < len(filtered_data):
+        if i + 1 < len(filtered_data):
             # On a une liste par heure et on veut rajouter les 30min entre chaque -> +1800
             new_data_to_interpolate = {
-                'datetime': data_json["datetime"] + 1800,
+                'datetime': data["datetime"] + 1800,
                 'co2_rate': -1
             }
             interpolated_data_tmp.append(new_data_to_interpolate)

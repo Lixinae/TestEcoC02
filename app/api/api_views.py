@@ -14,7 +14,7 @@ from app.models import RealDataC02, FilteredDataC02
 class Co2RateData(APIView):
 
     @staticmethod
-    def calcul_moyenne_jours_ouvre_weekend(real_data_json_tmp:List[Dict], interpolated_data_json_tmp:List[Dict]):
+    def calcul_moyenne_jours_ouvre_weekend(real_data_json_tmp: List[Dict], interpolated_data_json_tmp: List[Dict]):
         """
         Génère une liste de données de la même taille que celles en entrée
         Cette liste contient les moyennes de C02 à l'instant T pour les jours ouvrés et week end
@@ -83,8 +83,11 @@ class Co2RateData(APIView):
             real_data_tmp = RealDataC02.objects.all()
             filtered_data = FilteredDataC02.objects.all()
 
-            interpolated_data_json_tmp = interpolate_data_aux(filtered_data)
+            filtered_data_json_tmp = [x.to_json() for x in filtered_data]
+            interpolated_data_json_tmp = interpolate_data_aux(filtered_data_json_tmp)
             real_data_json_tmp = [x.to_json() for x in real_data_tmp]
+            # Pop obligatoire pour avoir des listes de même taille
+            real_data_json_tmp.pop()
             difference_data_json = [{
                 'datetime': x["datetime"],
                 'difference': x["co2_rate"] - y["co2_rate"]
@@ -94,18 +97,17 @@ class Co2RateData(APIView):
             json_data_to_send = []
             # Les 4 list json doivent être de la même taille ici
             for i in range(len(real_data_json_tmp)):
-                if interpolated_data_json_tmp[i]["co2_rate"] != -1:
-                    data = {
-                        'dt': dt.fromtimestamp(real_data_json_tmp[i]["datetime"]).strftime("%Y-%m-%dT%H:%M:%S"),
-                        'r': real_data_json_tmp[i]["co2_rate"],
-                        'i': interpolated_data_json_tmp[i]["co2_rate"],
-                        'dif': difference_data_json[i]["difference"],
-                        'm_jo_r': round(moy_json[i]["moy_jours_ouvre_real_co2_rate"],2),
-                        'm_we_r': round(moy_json[i]["moy_weekend_real_co2_rate"],2),
-                        'm_jo_i': round(moy_json[i]["moy_jours_ouvre_interpolated_co2_rate"],2),
-                        'm_we_i': round(moy_json[i]["moy_weekend_interpolated_co2_rate"],2),
-                    }
-                    json_data_to_send.append(data)
+                data = {
+                    'dt': dt.fromtimestamp(real_data_json_tmp[i]["datetime"]).strftime("%Y-%m-%dT%H:%M:%S"),
+                    'r': real_data_json_tmp[i]["co2_rate"],
+                    'i': interpolated_data_json_tmp[i]["co2_rate"],
+                    'dif': difference_data_json[i]["difference"],
+                    'm_jo_r': round(moy_json[i]["moy_jours_ouvre_real_co2_rate"], 2),
+                    'm_we_r': round(moy_json[i]["moy_weekend_real_co2_rate"], 2),
+                    'm_jo_i': round(moy_json[i]["moy_jours_ouvre_interpolated_co2_rate"], 2),
+                    'm_we_i': round(moy_json[i]["moy_weekend_interpolated_co2_rate"], 2),
+                }
+                json_data_to_send.append(data)
             return JsonResponse(json_data_to_send, safe=False)
         except ValueError as e:
             return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
