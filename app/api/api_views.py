@@ -86,8 +86,10 @@ class Co2RateData(APIView):
             filtered_data_json_tmp = [x.to_json() for x in filtered_data]
             interpolated_data_json_tmp = interpolate_data_aux(filtered_data_json_tmp)
             real_data_json_tmp = [x.to_json() for x in real_data_tmp]
-            # Pop obligatoire pour avoir des listes de même taille
-            real_data_json_tmp.pop()
+
+            if real_data_json_tmp:
+                # Pop obligatoire pour avoir des listes de même taille
+                real_data_json_tmp.pop()
             difference_data_json = [{
                 'datetime': x["datetime"],
                 'difference': x["co2_rate"] - y["co2_rate"]
