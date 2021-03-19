@@ -1,3 +1,10 @@
+.table_wrapper {
+    height: 500px;
+    padding: 0;
+    margin: 0 auto 0 auto;
+    overflow: auto;
+}
+
 .styled_table {
     border-collapse: collapse;
     margin: 25px 0;
@@ -29,4 +36,29 @@
 
 .styled_table tbody tr:last-of-type {
     border-bottom: 2px solid #0eafd2;
+}
+
+.co2_chart_bar_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#co2_chart_bar{
+    flex-grow: 4;
+}
+
+#legend {
+    flex-grow: 1;
+}
+
+#legend li {
+    margin: 10px 4px;
+    list-style-type: none;
+}
+
+#legend li span {
+    padding: 6px 20px;
+    border-radius: 1px;
+    color: #e9e9e9;
 }

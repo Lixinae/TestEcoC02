@@ -11,9 +11,9 @@
             <input id="input_nb_values_display" v-model.number="numb_values_to_display" type="number" placeholder="1"
                    min="1">
             <label for="input_nb_values_display">Nb values to display</label>
-
-            <table class="styled_table">
-                <thead>
+            <div class="table_wrapper">
+                <table class="styled_table">
+                    <thead>
                     <tr>
                         <th> Datetime</th>
                         <th> Real_co2_rate</th>
@@ -24,22 +24,29 @@
                         <th> Moyenne_jours_ouvre_Interpolated_co2_rate</th>
                         <th> Moyenne_weekend_Interpolated_co2_rate</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     <tr v-for="data in co2_rate_all_data_last_n">
-                        <td> <% data.dt %>  </td>
-                        <td> <% data.r %>  </td>
-                        <td> <% data.i %>  </td>
-                        <td> <% data.dif %>  </td>
-                        <td> <% data.m_jo_r %>  </td>
-                        <td> <% data.m_we_r %>  </td>
-                        <td> <% data.m_jo_i %>  </td>
-                        <td> <% data.m_we_i %>  </td>
+                        <td> <% data.dt %></td>
+                        <td> <% data.r %></td>
+                        <td> <% data.i %></td>
+                        <td> <% data.dif %></td>
+                        <td> <% data.m_jo_r %></td>
+                        <td> <% data.m_we_r %></td>
+                        <td> <% data.m_jo_i %></td>
+                        <td> <% data.m_we_i %></td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div id="co2_chart_bar_div">
+                <canvas id="co2_chart_bar"></canvas>
+                <div id="legend"></div>
+            </div>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script type="text/javascript" src="{% static 'scripts/app.js' %}"></script>
 {% endblock %}
