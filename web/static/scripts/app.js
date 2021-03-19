@@ -87,13 +87,13 @@ const options_bar_chart = {
         const text = [];
         text.push('<ul class="' + chart.id + '_legend">');
 
-        text.push('<li><span style="background-color:' + chart.data.datasets[0].colors[0] + '">');
-        text.push("Difference positive");
-        text.push('</span></li>');
+        text.push('<li><span style="background-color:' + chart.data.datasets[0].colors[0] + '"></span>');
+        text.push('<span class="legend_label">Difference positive</span>');
+        text.push('</li>');
 
-        text.push('<li><span style="background-color:' + chart.data.datasets[0].colors[1] + '">');
-        text.push("Difference Negative");
-        text.push('</span></li>');
+        text.push('<li><span style="background-color:' + chart.data.datasets[0].colors[1] + '"></span>');
+        text.push('<span class="legend_label">Difference negative</span>');
+        text.push('</li>');
         // }
         text.push('</ul>');
         return text.join("");
