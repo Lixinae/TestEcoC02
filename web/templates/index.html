@@ -5,24 +5,26 @@
 
     <div class="container">
         <div id="app">
-            <div class="app_title"> EcoC02 Test Technique</div>
-            <button v-on:click="fetch_elements"> Query data from server</button>
+            <div class="app_title"> EcoCO² Test Technique</div>
+            <div class="input_data">
+                <button v-on:click="fetch_elements" class="input_text"> Query data from server</button>
 
-            <input id="input_nb_values_display" v-model.number="numb_values_to_display" type="number" placeholder="1"
-                   min="1">
-            <label for="input_nb_values_display">Nb values to display</label>
+                <input id="input_nb_values_display" v-model.number="numb_values_to_display" type="number" placeholder="1"
+                       min="1">
+                <label for="input_nb_values_display" class="label_text">Number of values to display</label>
+            </div>
             <div class="table_wrapper">
                 <table class="styled_table">
                     <thead>
                     <tr>
-                        <th> Datetime</th>
-                        <th> Real_co2_rate</th>
-                        <th> Interpolated_co2_rate</th>
-                        <th> Difference</th>
-                        <th> Moyenne_jours_ouvre_real_co2_rate</th>
-                        <th> Moyenne_weekend_real_co2_rate</th>
-                        <th> Moyenne_jours_ouvre_Interpolated_co2_rate</th>
-                        <th> Moyenne_weekend_Interpolated_co2_rate</th>
+                        <th> Date</th>
+                        <th> Taux de CO² réel </th>
+                        <th> Taux de CO² interpolé</th>
+                        <th> Différence entre le taux réel et interpolé</th>
+                        <th> Moyenne du taux de CO² réel des jours ouvrés</th>
+                        <th> Moyenne du taux de CO² réel du weekend</th>
+                        <th> Moyenne du taux de CO² interpolé des jours ouvrés</th>
+                        <th> Moyenne du taux de CO² interpolé du weekend</th>
                     </tr>
                     </thead>
                     <tbody>

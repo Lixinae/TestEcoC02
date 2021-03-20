@@ -1,3 +1,22 @@
+.app_title{
+    font-family: sans-serif;
+    font-size: 2em;
+    text-align: center;
+}
+
+.input_text{
+    font-family: sans-serif;
+}
+
+.label_text{
+    font-family: sans-serif;
+}
+
+.input_data{
+    padding-top: 10px;
+    text-align: center;
+}
+
 .table_wrapper {
     height: 500px;
     padding: 0;
