@@ -32,7 +32,7 @@ class AppDjangoConfig(AppConfig):
             RealDataC02(datetime=data["datetime"], co2_rate=data["co2_rate"]) for data in co2_data_fetched
         ]
         try:
-            RealDataC02.objects.bulk_create(co2_data_fetched_to_insert)
+            RealDataC02.objects.bulk_create(co2_data_fetched_to_insert, ignore_conflicts=True)
         except ValueError:
             RealDataC02.objects.bulk_update(co2_data_fetched_to_insert)
         print("Finished initiliazing DB with Data from API")
@@ -41,7 +41,7 @@ class AppDjangoConfig(AppConfig):
             FilteredDataC02(datetime=data["datetime"], co2_rate=data["co2_rate"]) for data in filtered_data
         ]
         try:
-            FilteredDataC02.objects.bulk_create(filtered_data_to_insert)
+            FilteredDataC02.objects.bulk_create(filtered_data_to_insert, ignore_conflicts=True)
         except ValueError:
             FilteredDataC02.objects.bulk_update(filtered_data_to_insert)
         print("Setup for filtered data finished")
