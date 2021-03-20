@@ -15,5 +15,3 @@ If the database doesn't exist, you will need to run the following commands:
 ## Access the webpage:
  * Go to your browser and tip `http://127.0.0.1:8000/`, if you started you server on the same computer as your browser
 
-## Webpage format:
- * 
