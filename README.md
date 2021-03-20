@@ -1,5 +1,12 @@
 # Django_test
 
+## Create and run the virtual environnement
+ * Run the command `python -m venv <path to venv>`
+ * For example `python -m venv venv`
+ * You need to activate the venv by using:
+ * `source venv/bin/activate` on Linux
+ * `venv\Scripts\activate` on Windows command prompt
+
 ## Database
 If the database doesn't exist, you will need to run the following commands:
  * `python manage.py makemigrations app` (for the app named app)
