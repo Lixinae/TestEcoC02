@@ -14,7 +14,7 @@ If the database doesn't exist, you will need to run the following commands:
 
 
 ## How to run the api :
- * `python manage.py runserver`
+ * `python manage.py runserver 8000`
 
 ## How to run the tests :
  * `python manage.py test`
