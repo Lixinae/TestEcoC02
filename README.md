@@ -5,7 +5,7 @@
  * For example `python -m venv venv`
  * You need to activate the venv by using:
  * `source venv/bin/activate` on Linux
- * `venv\Scripts\activate` on Windows command prompt
+ * `venv\Scripts\activate` on Windows command prompt (There is only 1 backslash, somehow markdown writes 2 of them)
 
 ## Database
 If the database doesn't exist, you will need to run the following commands:
